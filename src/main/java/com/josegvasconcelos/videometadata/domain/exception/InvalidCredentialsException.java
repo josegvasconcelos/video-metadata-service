@@ -1,4 +1,4 @@
-package com.josegvasconcelos.videometadata.application.exception;
+package com.josegvasconcelos.videometadata.domain.exception;
 
 public class InvalidCredentialsException extends RuntimeException {
     public InvalidCredentialsException(String message) {

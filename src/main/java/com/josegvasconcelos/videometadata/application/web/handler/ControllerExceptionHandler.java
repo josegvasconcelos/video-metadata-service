@@ -1,14 +1,16 @@
 package com.josegvasconcelos.videometadata.application.web.handler;
 
-import com.josegvasconcelos.videometadata.application.exception.InvalidCredentialsException;
+import com.josegvasconcelos.videometadata.domain.exception.InvalidCredentialsException;
 import com.josegvasconcelos.videometadata.application.exception.TokenGenerationException;
 import com.josegvasconcelos.videometadata.application.exception.TokenValidationException;
-import com.josegvasconcelos.videometadata.application.exception.UserNotFoundException;
+import com.josegvasconcelos.videometadata.domain.exception.UserNotFoundException;
 import com.josegvasconcelos.videometadata.application.web.dto.response.ErrorResponseDTO;
+import com.josegvasconcelos.videometadata.resource.exception.WrongURLFormatException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -55,6 +57,30 @@ public class ControllerExceptionHandler {
         );
 
         return new ResponseEntity<>(responseBody, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({
+            WrongURLFormatException.class
+    })
+    public ResponseEntity<ErrorResponseDTO> handleBadRequestException(Exception ex, HttpServletRequest request) {
+        var responseBody = new ErrorResponseDTO(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({
+            MethodArgumentNotValidException.class
+    })
+    public ResponseEntity<ErrorResponseDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        var responseBody = new ErrorResponseDTO(
+                HttpStatus.BAD_REQUEST,
+                ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
