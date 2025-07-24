@@ -11,7 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "users")
 @Getter
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(generator = "ulid-generator")
     @GenericGenerator(name = "ulid-generator", type = ULIDGenerator.class)
