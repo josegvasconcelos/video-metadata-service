@@ -2,6 +2,8 @@ package com.josegvasconcelos.videometadata.application.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.josegvasconcelos.videometadata.application.exception.TokenGenerationException;
+import com.josegvasconcelos.videometadata.application.exception.TokenValidationException;
 import com.josegvasconcelos.videometadata.domain.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,24 +19,34 @@ public class JWTService {
 
     private static final String ISSUER = "video-metadata-service";
     private static final String USERNAME_CLAIM = "username";
+    private static final String ROLE_CLAIM = "role";
 
     public String generateToken(User user) {
-        var algorithm = Algorithm.HMAC256(secretKey);
-        return JWT.create()
-                .withIssuer(ISSUER)
-                .withSubject(user.getId())
-                .withClaim(USERNAME_CLAIM, user.getUsername())
-                .withExpiresAt(generateExpirationInstant())
-                .sign(algorithm);
+        try {
+            var algorithm = Algorithm.HMAC256(secretKey);
+            return JWT.create()
+                    .withIssuer(ISSUER)
+                    .withSubject(user.getId())
+                    .withClaim(USERNAME_CLAIM, user.getUsername())
+                    .withClaim(ROLE_CLAIM, user.getRole().getRole())
+                    .withExpiresAt(generateExpirationInstant())
+                    .sign(algorithm);
+        } catch (Exception e) {
+            throw new TokenGenerationException(e.getMessage());
+        }
     }
 
     public String validateToken(String token) {
-        var algorithm = Algorithm.HMAC256(secretKey);
-        return JWT.require(algorithm)
-                .withIssuer(ISSUER)
-                .build()
-                .verify(token)
-                .getSubject();
+        try {
+            var algorithm = Algorithm.HMAC256(secretKey);
+            return JWT.require(algorithm)
+                    .withIssuer(ISSUER)
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        } catch (Exception e) {
+            throw new TokenValidationException(e.getMessage());
+        }
     }
 
     private Instant generateExpirationInstant() {

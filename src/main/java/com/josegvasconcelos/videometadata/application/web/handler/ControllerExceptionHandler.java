@@ -1,8 +1,8 @@
 package com.josegvasconcelos.videometadata.application.web.handler;
 
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.josegvasconcelos.videometadata.application.exception.InvalidCredentialsException;
+import com.josegvasconcelos.videometadata.application.exception.TokenGenerationException;
+import com.josegvasconcelos.videometadata.application.exception.TokenValidationException;
 import com.josegvasconcelos.videometadata.application.exception.UserNotFoundException;
 import com.josegvasconcelos.videometadata.application.web.dto.response.ErrorResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,8 +17,8 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 public class ControllerExceptionHandler {
     @ExceptionHandler({
             InvalidCredentialsException.class,
-            JWTCreationException.class,
-            JWTVerificationException.class
+            TokenGenerationException.class,
+            TokenValidationException.class,
     })
     public ResponseEntity<ErrorResponseDTO> handleUnauthorizedException(Exception ex, HttpServletRequest request) {
         var responseBody = new ErrorResponseDTO(
@@ -32,7 +32,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler({
             UserNotFoundException.class,
-            NoResourceFoundException.class
+            NoResourceFoundException.class,
     })
     public ResponseEntity<ErrorResponseDTO> handleNotFoundException(Exception ex, HttpServletRequest request) {
         var responseBody = new ErrorResponseDTO(
@@ -55,5 +55,15 @@ public class ControllerExceptionHandler {
         );
 
         return new ResponseEntity<>(responseBody, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO> handleException(Exception ex, HttpServletRequest request) {
+        var responseBody = new ErrorResponseDTO(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Internal server error",
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
