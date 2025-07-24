@@ -1,0 +1,1 @@
+rootProject.name = "video-metadata-service"
