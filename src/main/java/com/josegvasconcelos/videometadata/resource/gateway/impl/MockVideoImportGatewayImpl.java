@@ -6,6 +6,7 @@ import com.josegvasconcelos.videometadata.resource.gateway.VideoImportGateway;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
@@ -26,6 +27,12 @@ public class MockVideoImportGatewayImpl implements VideoImportGateway {
             var title = kebabToTitle(matcher.group(2));
             var durationInSeconds = ThreadLocalRandom.current().nextLong(1, 1001);
 
+            var year = ThreadLocalRandom.current().nextInt(2000, 2025);
+            var month = ThreadLocalRandom.current().nextInt(1, 12);
+            var day = ThreadLocalRandom.current().nextInt(1, 29);
+
+            var uploadDate = LocalDate.of(year, month, day);
+
             var description = "Video about " + title + " lasting " + durationInSeconds + " seconds.";
 
             return new Video(
@@ -34,7 +41,8 @@ public class MockVideoImportGatewayImpl implements VideoImportGateway {
                     description,
                     source,
                     url,
-                    durationInSeconds
+                    durationInSeconds,
+                    uploadDate
             );
         } else {
             throw new WrongURLFormatException("Wrong url format");

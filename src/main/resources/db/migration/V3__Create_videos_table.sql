@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS videos (
     description VARCHAR(255) NOT NULL,
     source VARCHAR(255) NOT NULL,
     url VARCHAR(255) NOT NULL,
-    duration_in_seconds BIGINT NOT NULL
+    duration_in_seconds BIGINT NOT NULL,
+    upload_date TIMESTAMP WITH TIME ZONE NOT NULL
 );

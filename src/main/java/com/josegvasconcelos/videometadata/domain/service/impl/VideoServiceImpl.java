@@ -1,11 +1,15 @@
 package com.josegvasconcelos.videometadata.domain.service.impl;
 
+import com.josegvasconcelos.videometadata.application.web.dto.filter.VideoFilterDTO;
 import com.josegvasconcelos.videometadata.domain.entity.Video;
 import com.josegvasconcelos.videometadata.domain.exception.VideoNotFoundException;
 import com.josegvasconcelos.videometadata.domain.repository.VideoRepository;
 import com.josegvasconcelos.videometadata.domain.service.VideoService;
+import com.josegvasconcelos.videometadata.domain.util.VideoSpecification;
 import com.josegvasconcelos.videometadata.resource.gateway.VideoImportGateway;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,5 +32,12 @@ public class VideoServiceImpl implements VideoService {
         return videoRepository.findById(id).orElseThrow(
                 () -> new VideoNotFoundException("Video with id " + id + " not found")
         );
+    }
+
+    @Override
+    public Page<Video> findAllVideos(Pageable pageable, VideoFilterDTO filters) {
+        var specification = VideoSpecification.withFilters(filters);
+
+        return videoRepository.findAll(specification, pageable);
     }
 }

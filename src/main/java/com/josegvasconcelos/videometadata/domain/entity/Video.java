@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDate;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,4 +30,6 @@ public class Video {
     private String source;
     private String url;
     private Long durationInSeconds;
+    private LocalDate uploadDate;
+
 }
