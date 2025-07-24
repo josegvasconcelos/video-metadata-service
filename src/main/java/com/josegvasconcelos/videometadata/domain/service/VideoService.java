@@ -4,4 +4,5 @@ import com.josegvasconcelos.videometadata.domain.entity.Video;
 
 public interface VideoService {
     Video importMetadataByUrl(String url);
+    Video findVideoById(String id);
 }

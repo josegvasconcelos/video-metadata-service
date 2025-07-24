@@ -5,6 +5,7 @@ import com.josegvasconcelos.videometadata.application.exception.TokenGenerationE
 import com.josegvasconcelos.videometadata.application.exception.TokenValidationException;
 import com.josegvasconcelos.videometadata.domain.exception.UserNotFoundException;
 import com.josegvasconcelos.videometadata.application.web.dto.response.ErrorResponseDTO;
+import com.josegvasconcelos.videometadata.domain.exception.VideoNotFoundException;
 import com.josegvasconcelos.videometadata.resource.exception.WrongURLFormatException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler({
             UserNotFoundException.class,
             NoResourceFoundException.class,
+            VideoNotFoundException.class,
     })
     public ResponseEntity<ErrorResponseDTO> handleNotFoundException(Exception ex, HttpServletRequest request) {
         var responseBody = new ErrorResponseDTO(
