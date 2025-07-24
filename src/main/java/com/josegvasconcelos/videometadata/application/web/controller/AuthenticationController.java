@@ -1,6 +1,6 @@
 package com.josegvasconcelos.videometadata.application.web.controller;
 
-import com.josegvasconcelos.videometadata.application.service.AuthService;
+import com.josegvasconcelos.videometadata.application.service.AuthenticationService;
 import com.josegvasconcelos.videometadata.application.web.dto.request.LoginRequestDTO;
 import com.josegvasconcelos.videometadata.application.web.dto.response.LoginResponseDTO;
 import lombok.AllArgsConstructor;
@@ -13,19 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthenticationController {
 
-    private AuthService authService;
+    private AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(
-            @RequestBody LoginRequestDTO loginRequest
-    ) {
-        String username = loginRequest.username();
-        String password = loginRequest.password();
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
+        var token = authenticationService.authenticate(loginRequest.username(),  loginRequest.password());
 
-        return ResponseEntity.ok(
-                new LoginResponseDTO(authService.authenticate(username, password))
-        );
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }
