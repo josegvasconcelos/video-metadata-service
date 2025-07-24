@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/demo
-    username: postgres
-    password: yourpassword
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: none
@@ -14,4 +14,4 @@ spring:
     baseline-on-migrate: true
 
 jwt:
-  secret: yourSecretKeyForJWTs
+  secret: ${JWT_SECRET_KEY}

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: video-metadata-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: video_metadata
+      POSTGRES_USER: video_metadata
+      POSTGRES_PASSWORD: P@55w0rd!
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
