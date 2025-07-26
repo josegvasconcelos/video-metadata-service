@@ -2,7 +2,7 @@ package com.josegvasconcelos.videometadata.application.web.controller;
 
 import com.josegvasconcelos.videometadata.application.web.dto.filter.VideoFilterDTO;
 import com.josegvasconcelos.videometadata.application.web.dto.request.ImportVideoRequestDTO;
-import com.josegvasconcelos.videometadata.application.web.dto.response.StatisticsDTO;
+import com.josegvasconcelos.videometadata.application.web.dto.response.StatisticsResponseDTO;
 import com.josegvasconcelos.videometadata.application.web.dto.response.VideoResponseDTO;
 import com.josegvasconcelos.videometadata.domain.service.VideoService;
 import jakarta.validation.Valid;
@@ -69,10 +69,10 @@ public class VideoController {
 
     @GetMapping("/stats")
     @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<StatisticsDTO> getStatistics() {
+    public ResponseEntity<StatisticsResponseDTO> getStatistics() {
         var statistics = videoService.calculateStatistics();
 
-        var response = StatisticsDTO.fromStatistics(statistics);
+        var response = StatisticsResponseDTO.fromStatistics(statistics);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

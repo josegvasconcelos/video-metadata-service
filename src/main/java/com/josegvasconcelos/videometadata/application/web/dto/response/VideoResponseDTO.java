@@ -1,5 +1,6 @@
 package com.josegvasconcelos.videometadata.application.web.dto.response;
 
+import com.josegvasconcelos.videometadata.application.web.documentation.dto.response.VideoResponseDoc;
 import com.josegvasconcelos.videometadata.domain.entity.Video;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ public record VideoResponseDTO(
         String url,
         Long durationInSeconds,
         LocalDate uploadDate
-) {
+) implements VideoResponseDoc {
     public static VideoResponseDTO fromVideo(Video video) {
         return new VideoResponseDTO(
                 video.getId(),
