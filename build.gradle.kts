@@ -22,6 +22,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-cache")
 
     // Database Dependencies
     implementation("org.postgresql:postgresql")
@@ -29,6 +30,9 @@ dependencies {
 
     // JWT Dependencies
     implementation("com.auth0:java-jwt:4.4.0")
+
+    // Caching dependencies
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.6")
 
     // MISC Dependencies
     implementation("de.huxhorn.sulky:de.huxhorn.sulky.ulid:8.2.0")

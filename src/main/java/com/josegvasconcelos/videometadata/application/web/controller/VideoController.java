@@ -2,7 +2,9 @@ package com.josegvasconcelos.videometadata.application.web.controller;
 
 import com.josegvasconcelos.videometadata.application.web.dto.filter.VideoFilterDTO;
 import com.josegvasconcelos.videometadata.application.web.dto.request.ImportVideoRequestDTO;
+import com.josegvasconcelos.videometadata.application.web.dto.response.StatisticsDTO;
 import com.josegvasconcelos.videometadata.application.web.dto.response.VideoResponseDTO;
+import com.josegvasconcelos.videometadata.domain.model.Statistics;
 import com.josegvasconcelos.videometadata.domain.service.VideoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -36,7 +38,7 @@ public class VideoController {
     ) {
         var video = videoService.importMetadataByUrl(importVideoRequest.url());
 
-        var response = VideoResponseDTO.from(video);
+        var response = VideoResponseDTO.fromVideo(video);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -46,7 +48,7 @@ public class VideoController {
     public ResponseEntity<VideoResponseDTO> getVideoById(@PathVariable String id) {
         var video = videoService.findVideoById(id);
 
-        var response = VideoResponseDTO.from(video);
+        var response = VideoResponseDTO.fromVideo(video);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -60,8 +62,18 @@ public class VideoController {
         var videosPage = videoService.findAllVideos(pageable, filters);
 
         var response = videosPage.stream()
-                .map(VideoResponseDTO::from)
+                .map(VideoResponseDTO::fromVideo)
                 .toList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/stats")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<StatisticsDTO> getStatistics() {
+        var statistics = videoService.calculateStatistics();
+
+        var response = StatisticsDTO.fromStatistics(statistics);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

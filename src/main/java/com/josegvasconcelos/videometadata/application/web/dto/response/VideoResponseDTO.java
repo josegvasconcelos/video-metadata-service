@@ -13,7 +13,7 @@ public record VideoResponseDTO(
         Long durationInSeconds,
         LocalDate uploadDate
 ) {
-    public static VideoResponseDTO from(Video video) {
+    public static VideoResponseDTO fromVideo(Video video) {
         return new VideoResponseDTO(
                 video.getId(),
                 video.getTitle(),
