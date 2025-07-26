@@ -4,7 +4,6 @@ import com.josegvasconcelos.videometadata.application.web.dto.filter.VideoFilter
 import com.josegvasconcelos.videometadata.application.web.dto.request.ImportVideoRequestDTO;
 import com.josegvasconcelos.videometadata.application.web.dto.response.StatisticsDTO;
 import com.josegvasconcelos.videometadata.application.web.dto.response.VideoResponseDTO;
-import com.josegvasconcelos.videometadata.domain.model.Statistics;
 import com.josegvasconcelos.videometadata.domain.service.VideoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

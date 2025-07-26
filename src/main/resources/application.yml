@@ -16,5 +16,11 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /docs
+
 jwt:
   secret: ${JWT_SECRET_KEY}

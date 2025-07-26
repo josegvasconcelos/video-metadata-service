@@ -34,6 +34,9 @@ dependencies {
     // Caching dependencies
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.6")
 
+    // DOCS dependencies
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+
     // MISC Dependencies
     implementation("de.huxhorn.sulky:de.huxhorn.sulky.ulid:8.2.0")
     compileOnly("org.projectlombok:lombok:1.18.30")

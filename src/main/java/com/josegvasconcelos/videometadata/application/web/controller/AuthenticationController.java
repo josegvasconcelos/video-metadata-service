@@ -1,9 +1,9 @@
 package com.josegvasconcelos.videometadata.application.web.controller;
 
 import com.josegvasconcelos.videometadata.application.service.AuthenticationService;
+import com.josegvasconcelos.videometadata.application.web.documentation.controller.AuthenticationControllerDoc;
 import com.josegvasconcelos.videometadata.application.web.dto.request.LoginRequestDTO;
 import com.josegvasconcelos.videometadata.application.web.dto.response.LoginResponseDTO;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/auth")
-public class AuthenticationController {
+public class AuthenticationController implements AuthenticationControllerDoc {
 
     private AuthenticationService authenticationService;
 
+    @Override
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(
-            @RequestBody @Valid LoginRequestDTO loginRequest
+            @RequestBody LoginRequestDTO loginRequest
     ) {
         var token = authenticationService.authenticate(loginRequest.username(),  loginRequest.password());
 
