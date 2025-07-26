@@ -20,7 +20,6 @@ import org.springframework.validation.annotation.Validated;
 )
 @Validated
 public interface AuthenticationControllerDoc {
-
     @Operation(
             summary = "Authenticate user",
             description = "Validates username and password and returns a JWT token.",

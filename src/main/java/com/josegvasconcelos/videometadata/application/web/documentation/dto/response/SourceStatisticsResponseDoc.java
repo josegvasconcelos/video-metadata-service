@@ -12,11 +12,13 @@ public interface SourceStatisticsResponseDoc {
             example = "YOUTUBE"
     )
     String source();
+
     @Schema(
             description = "Number of videos that were imported for the source",
             example = "50"
     )
     Long importedVideos();
+
     @Schema(
             description = "Average duration of source's videos in seconds",
             example = "350"

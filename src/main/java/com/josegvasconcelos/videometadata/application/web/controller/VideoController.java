@@ -1,5 +1,6 @@
 package com.josegvasconcelos.videometadata.application.web.controller;
 
+import com.josegvasconcelos.videometadata.application.web.documentation.controller.VideoControllerDoc;
 import com.josegvasconcelos.videometadata.application.web.dto.filter.VideoFilterDTO;
 import com.josegvasconcelos.videometadata.application.web.dto.request.ImportVideoRequestDTO;
 import com.josegvasconcelos.videometadata.application.web.dto.response.StatisticsResponseDTO;
@@ -26,10 +27,11 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/videos")
-public class VideoController {
+public class VideoController implements VideoControllerDoc {
 
     private VideoService videoService;
 
+    @Override
     @PostMapping("/import")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<VideoResponseDTO> importVideoMetadataByUrl(
@@ -42,6 +44,7 @@ public class VideoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @Override
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<VideoResponseDTO> getVideoById(@PathVariable String id) {
@@ -52,6 +55,7 @@ public class VideoController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @Override
     @GetMapping()
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<List<VideoResponseDTO>> getAllVideos(
@@ -67,6 +71,7 @@ public class VideoController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @Override
     @GetMapping("/stats")
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<StatisticsResponseDTO> getStatistics() {

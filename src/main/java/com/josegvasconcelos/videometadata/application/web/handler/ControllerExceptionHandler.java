@@ -8,6 +8,7 @@ import com.josegvasconcelos.videometadata.application.web.dto.response.ErrorResp
 import com.josegvasconcelos.videometadata.domain.exception.VideoNotFoundException;
 import com.josegvasconcelos.videometadata.resource.exception.WrongURLFormatException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,6 +68,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler({
             WrongURLFormatException.class,
             PropertyReferenceException.class,
+            ConstraintViolationException.class,
     })
     public ResponseEntity<ErrorResponseDTO> handleBadRequestException(Exception ex, HttpServletRequest request) {
         var responseBody = new ErrorResponseDTO(

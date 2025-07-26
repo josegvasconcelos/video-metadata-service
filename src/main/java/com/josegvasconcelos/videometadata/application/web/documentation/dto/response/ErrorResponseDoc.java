@@ -13,11 +13,13 @@ public interface ErrorResponseDoc {
             example = "BAD_REQUEST"
     )
     HttpStatus status();
+
     @Schema(
             description = "Description of the API error cause",
             example = "Missing parameter X"
     )
     String message();
+
     @Schema(
             description = "URL that raised the API error",
             example = "/videos/import"
