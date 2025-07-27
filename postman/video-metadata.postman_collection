@@ -1,0 +1,341 @@
+{
+	"info": {
+		"_postman_id": "687a50c6-4cb9-403c-8474-e3a1e4274715",
+		"name": "Video Metadata",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13069597"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "1. Login - ADMIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Check if the token field exists in the response\r",
+									"if (response.token) {\r",
+									"    pm.environment.set(\"token\", response.token);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"john.admin\",\r\n    \"password\": \"dc872b11dd2089a3edc513b0d5a725e0b41380c180b11b0f9a8784ee714d189b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:7000/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Login - USER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Check if the token field exists in the response\r",
+									"if (response.token) {\r",
+									"    pm.environment.set(\"token\", response.token);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"john.user\",\r\n    \"password\": \"ee76f6e173d84fe789a43a1042d535a423f2c06eaf971f4b1b3556ceea202aac\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:7000/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Video",
+			"item": [
+				{
+					"name": "1. Import Video",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Randomly select a video source from a predefined list\r",
+									"const videoSources = [\"youtube\", \"vimeo\", \"facebook\"];\r",
+									"// Generate a random index to select a source\r",
+									"const randomIndex = Math.floor(Math.random() * videoSources.length);\r",
+									"// Select the video source\r",
+									"const selectedSource = videoSources[randomIndex];\r",
+									"// Assign the selected source to an environment variable\r",
+									"pm.environment.set(\"video_source\", selectedSource);\r",
+									"\r",
+									"\r",
+									"// Generate a random video title using 3 words\r",
+									"const words = [\"amazing\", \"incredible\", \"unbelievable\", \"journey\", \"adventure\", \"experience\", \"discovery\", \"moments\", \"vibes\", \"highlights\"];\r",
+									"\r",
+									"// Function to generate a random title\r",
+									"const generateRandomTitle = () => {\r",
+									"    const randomWords = [];\r",
+									"    for (let i = 0; i < 3; i++) {\r",
+									"        const randomIndex = Math.floor(Math.random() * words.length);\r",
+									"        randomWords.push(words[randomIndex]);\r",
+									"    }\r",
+									"    return randomWords.join(\"-\");\r",
+									"};\r",
+									"\r",
+									"// Set the generated title to an environment variable\r",
+									"const videoTitle = generateRandomTitle();\r",
+									"pm.environment.set(\"video_title\", videoTitle);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\": \"https://{{video_source}}.com/{{video_title}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:7000/videos/import",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"videos",
+								"import"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Get Video by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:7000/videos/01K147Q7B75128K2GB5FYH4FA4",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"videos",
+								"01K147Q7B75128K2GB5FYH4FA4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get All Videos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:7000/videos?page=0&size=5&sort=uploadDate,durationInSeconds,desc&source=youtube",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"videos"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "uploadDate,durationInSeconds,desc"
+								},
+								{
+									"key": "source",
+									"value": "youtube"
+								},
+								{
+									"key": "uploadDate",
+									"value": "2006-04-04",
+									"disabled": true
+								},
+								{
+									"key": "durationInSeconds",
+									"value": "77",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Videos Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:7000/videos/stats",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"videos",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actuator",
+			"item": [
+				{
+					"name": "1. Actuator",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:7000/actuator",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"actuator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Actuator Health",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:7000/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
