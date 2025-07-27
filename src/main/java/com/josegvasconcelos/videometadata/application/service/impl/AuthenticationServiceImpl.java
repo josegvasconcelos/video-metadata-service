@@ -4,10 +4,12 @@ import com.josegvasconcelos.videometadata.application.service.AuthenticationServ
 import com.josegvasconcelos.videometadata.application.service.JWTService;
 import com.josegvasconcelos.videometadata.domain.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -18,7 +20,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String authenticate(String username, String password) {
-        var credentials =  new UsernamePasswordAuthenticationToken(username, password);
+        var credentials = new UsernamePasswordAuthenticationToken(username, password);
+
+        log.info("Authenticating user: {}", username);
         var authentication = authenticationManager.authenticate(credentials);
 
         return jwtService.generateToken((User) authentication.getPrincipal());

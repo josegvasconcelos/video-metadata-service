@@ -4,6 +4,7 @@ import com.josegvasconcelos.videometadata.domain.entity.Video;
 import com.josegvasconcelos.videometadata.resource.exception.WrongURLFormatException;
 import com.josegvasconcelos.videometadata.resource.gateway.VideoImportGateway;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class MockVideoImportGatewayImpl implements VideoImportGateway {
@@ -20,6 +22,7 @@ public class MockVideoImportGatewayImpl implements VideoImportGateway {
 
     @Override
     public Video importVideoMetadataByUrl(String url) {
+        log.info("Generating mock data for video with URL: {}", url);
         var matcher = URL_PATTERN.matcher(url);
 
         if (matcher.find()) {
@@ -45,6 +48,7 @@ public class MockVideoImportGatewayImpl implements VideoImportGateway {
                     uploadDate
             );
         } else {
+            log.error("URL for imported video {} is malformed", url);
             throw new WrongURLFormatException("Wrong url format");
         }
     }

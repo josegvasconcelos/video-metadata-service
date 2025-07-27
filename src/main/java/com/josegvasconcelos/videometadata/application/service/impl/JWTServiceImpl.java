@@ -6,6 +6,7 @@ import com.josegvasconcelos.videometadata.application.exception.TokenGenerationE
 import com.josegvasconcelos.videometadata.application.exception.TokenValidationException;
 import com.josegvasconcelos.videometadata.application.service.JWTService;
 import com.josegvasconcelos.videometadata.domain.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+@Slf4j
 @Service
 public class JWTServiceImpl implements JWTService {
     @Value("${jwt.secret}")
@@ -34,6 +36,7 @@ public class JWTServiceImpl implements JWTService {
                     .withExpiresAt(generateExpirationInstant())
                     .sign(algorithm);
         } catch (Exception e) {
+            log.error("Error while generating JWT Token for user: {}", user.getUsername());
             throw new TokenGenerationException(e.getMessage());
         }
     }
@@ -48,6 +51,7 @@ public class JWTServiceImpl implements JWTService {
                     .verify(token)
                     .getSubject();
         } catch (Exception e) {
+            log.error("Error while validating JWT Token");
             throw new TokenValidationException(e.getMessage());
         }
     }

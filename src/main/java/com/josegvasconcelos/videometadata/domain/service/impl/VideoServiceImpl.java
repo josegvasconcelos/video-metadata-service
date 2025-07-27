@@ -11,6 +11,7 @@ import com.josegvasconcelos.videometadata.domain.util.VideoSpecification;
 import com.josegvasconcelos.videometadata.resource.gateway.VideoImportGateway;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class VideoServiceImpl implements VideoService {
@@ -32,28 +34,36 @@ public class VideoServiceImpl implements VideoService {
     @Override
     @CacheEvict(value = "stats", allEntries = true)
     public Video importMetadataByUrl(String url) {
+        log.info("Importing video metadata by url {}", url);
         var video = videoImportGateway.importVideoMetadataByUrl(url);
 
+        log.info("Imported video metadata for url {}", url);
         return videoRepository.save(video);
     }
 
     @Override
     public Video findVideoById(String id) {
-        return videoRepository.findById(id).orElseThrow(
-                () -> new VideoNotFoundException("Video with id " + id + " not found")
-        );
+        log.info("Finding video by id {}", id);
+        return videoRepository.findById(id).orElseThrow(() -> {
+            log.error("Video with id {} not found", id);
+            return new VideoNotFoundException("Video with id " + id + " not found");
+        });
     }
 
     @Override
     public Page<Video> findAllVideos(Pageable pageable, VideoFilterDTO filters) {
+        log.info("Finding videos by filters {} and page {}", filters, pageable);
         var specification = VideoSpecification.withFilters(filters);
 
+        log.info("Returning videos by filters {} and page {}", filters, pageable);
         return videoRepository.findAll(specification, pageable);
     }
 
     @Override
     @Cacheable("stats")
     public Statistics calculateStatistics() {
+        log.info("Calculating video statistics for all sources");
+
         @Getter
         @Service
         @AllArgsConstructor
@@ -88,11 +98,14 @@ public class VideoServiceImpl implements VideoService {
         var sourcesStatistics = new ArrayList<SourceStatistics>();
 
         videosBySource.forEach((source, stats) -> {
+            log.info("Calculating video statistics for source {}", source);
             var averageDuration = Double.valueOf(stats.totalDuration.doubleValue() / stats.importedVideos.doubleValue());
 
+            log.info("Statistics for source {} were calculated", source);
             sourcesStatistics.add(new SourceStatistics(source, stats.importedVideos, averageDuration));
         });
 
+        log.info("Returning video statistics for all sources");
         return new Statistics(sourcesStatistics);
     }
 }
