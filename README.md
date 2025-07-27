@@ -27,6 +27,10 @@ Jakarta Validation annotations (```@NotBlank, @Size, @Pattern```) on DTOs enforc
 ### Pagination & Filtering
 List endpoints accept Spring Data Pageable parameters for pagination and sorting. Dynamic filters are built with JPA Specifications from a ```VideoFilterDTO```, enabling optional filters on any field.
 
+### Caching: CaffeineCacheManager
+Use Spring’s Cache Abstraction with a ```CaffeineCacheManager``` bean to back caches (e.g., sources) with in-memory, bounded caches. 
+We configure max-size and expire-after-write policies to ensure high performance with controlled memory usage and automatic eviction of stale entries.
+
 ### OpenAPI & Swagger
 Leverage springdoc-openapi to automatically generate an OpenAPI 3 specification and serve a Swagger UI:
 - Documentation endpoints: OpenAPI JSON at ```/v3/api-docs```, Swagger UI at ```/swagger-ui.html``` or ```/swagger-ui/index.html```.
