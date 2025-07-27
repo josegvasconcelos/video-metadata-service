@@ -1,4 +1,4 @@
-package resource.domain.service.impl;
+package domain.service.impl;
 
 import com.josegvasconcelos.videometadata.domain.entity.User;
 import com.josegvasconcelos.videometadata.domain.entity.UserRole;
@@ -35,7 +35,7 @@ public class UserServiceImplTest {
     void shouldFindByUsernameSuccessfully() {
         var username = "user.name";
 
-        User user = User.builder()
+        var user = User.builder()
                 .id(new ULID().nextULID())
                 .username(username)
                 .password("password")
@@ -45,7 +45,7 @@ public class UserServiceImplTest {
         when(userRepository.findByUsername(username))
                 .thenReturn(Optional.of(user));
 
-        User resultUser = userService.findByUsername(username);
+        var resultUser = userService.findByUsername(username);
 
         assertSame(user, resultUser);
         verify(userRepository, times(1)).findByUsername(username);
@@ -69,7 +69,7 @@ public class UserServiceImplTest {
     void shouldFindByIdSuccessfully() {
         var userId = new ULID().nextULID();
 
-        User user = User.builder()
+        var user = User.builder()
                 .id(userId)
                 .username("user.name")
                 .password("password")
@@ -79,7 +79,7 @@ public class UserServiceImplTest {
         when(userRepository.findById(userId))
                 .thenReturn(Optional.of(user));
 
-        User resultUser = userService.findById(userId);
+        var resultUser = userService.findById(userId);
 
         assertSame(user, resultUser);
         verify(userRepository, times(1)).findById(userId);

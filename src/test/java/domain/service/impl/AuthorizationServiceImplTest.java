@@ -1,4 +1,4 @@
-package resource.domain.service.impl;
+package domain.service.impl;
 
 import com.josegvasconcelos.videometadata.domain.entity.User;
 import com.josegvasconcelos.videometadata.domain.entity.UserRole;
@@ -36,7 +36,7 @@ public class AuthorizationServiceImplTest {
     void shouldLoadByUsernameSuccessfully() {
         var username = "user.name";
 
-        User user = User.builder()
+        var user = User.builder()
                 .id(new ULID().nextULID())
                 .username(username)
                 .password("password")

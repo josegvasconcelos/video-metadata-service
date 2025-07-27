@@ -1,12 +1,9 @@
 package resource.gateway.impl;
 
-import com.josegvasconcelos.videometadata.domain.entity.Video;
 import com.josegvasconcelos.videometadata.resource.exception.WrongURLFormatException;
 import com.josegvasconcelos.videometadata.resource.gateway.impl.MockVideoImportGatewayImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,22 +13,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MockVideoImportGatewayImplTest {
 
-    private final MockVideoImportGatewayImpl gateway = new MockVideoImportGatewayImpl();;
+    private final MockVideoImportGatewayImpl gateway = new MockVideoImportGatewayImpl();
 
     @Test
     void shouldImportVideoSuccessfully() {
-        String url = "https://youtube.com/video-title-here";
+        var url = "https://youtube.com/video-title-here";
 
-        Video video = gateway.importVideoMetadataByUrl(url);
+        var video = gateway.importVideoMetadataByUrl(url);
 
-        String expectedDescription = "Video about " + video.getTitle() + " lasting " + video.getDurationInSeconds() + " seconds.";
+        var expectedDescription = "Video about " + video.getTitle() + " lasting " + video.getDurationInSeconds() + " seconds.";
 
-        Long duration = video.getDurationInSeconds();
+        var duration = video.getDurationInSeconds();
 
-        LocalDate uploadDate = video.getUploadDate();
-        int year  = uploadDate.getYear();
-        int month = uploadDate.getMonthValue();
-        int day   = uploadDate.getDayOfMonth();
+        var uploadDate = video.getUploadDate();
+        var year  = uploadDate.getYear();
+        var month = uploadDate.getMonthValue();
+        var day   = uploadDate.getDayOfMonth();
 
         assertNotNull(video);
         assertEquals("YOUTUBE", video.getSource());
@@ -46,7 +43,7 @@ public class MockVideoImportGatewayImplTest {
 
     @Test
     void shouldThrowWrongURLFormatExceptionWhenImportingWithMalformedUrl() {
-        String malformed = "not-a-valid-url";
+        var malformed = "not-a-valid-url";
 
         assertThrows(WrongURLFormatException.class,
                 () -> gateway.importVideoMetadataByUrl(malformed)

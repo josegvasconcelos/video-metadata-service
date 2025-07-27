@@ -1,4 +1,4 @@
-package resource.domain.service.impl;
+package domain.service.impl;
 
 import com.josegvasconcelos.videometadata.application.web.dto.filter.VideoFilterDTO;
 import com.josegvasconcelos.videometadata.domain.entity.Video;
