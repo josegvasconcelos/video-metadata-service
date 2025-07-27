@@ -125,7 +125,7 @@ curl --location 'http://localhost:7000/videos/import' \
 --header 'Authorization: Bearer <ADMIN_TOKEN>' \
 --header 'Content-Type: application/json' \
 --data '{
-url": "https://facebook.com/amazing-unbelievable-amazing"
+"url": "https://facebook.com/amazing-unbelievable-amazing"
 }'
 ```
 URL pattern: **https://{source}.com/{video-title}**
