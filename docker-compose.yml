@@ -1,18 +1,33 @@
 version: '3.8'
 
 services:
-  postgres:
+  postgres-database:
     image: postgres:16
-    container_name: video-metadata-postgres
+    container_name: postgres-video-metadata
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: video_metadata
-      POSTGRES_USER: video_metadata
-      POSTGRES_PASSWORD: P@55w0rd!
+      POSTGRES_DB: ${DATASOURCE_NAME}
+      POSTGRES_USER: ${DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  spring-boot-app:
+    build:
+      context: .
+      dockerfile: Dockerfile-springboot
+    container_name: video-metadata-service
+    restart: unless-stopped
+    depends_on:
+      - postgres-database
+    env_file:
+      - .env
+    ports:
+      - "7000:7000"
 
 volumes:
   postgres_data:
